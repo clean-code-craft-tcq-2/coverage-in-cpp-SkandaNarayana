@@ -39,14 +39,16 @@ public:
         BreachAlert *alert;
         if (breachType == TOO_LOW) {
             alert = new BreachAlert(new LowBreachType);
+            alert->outputAlert(recipient);
         }
         if(breachType == TOO_HIGH){
             alert = new BreachAlert(new HighBreachType);
+            alert->outputAlert(recipient);
         }
         if(breachType == NORMAL){
             alert = new BreachAlert(new NormalBreachType);
+            alert->outputAlert(recipient);
         }
-        alert->outputAlert(recipient);
     }
 };
 

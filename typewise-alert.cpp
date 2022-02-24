@@ -10,15 +10,16 @@ BreachType classifyTemperatureBreach(
         TemperatureBreachClassifier *breachClassifier;
         if(coolingType == PASSIVE_COOLING){
             breachClassifier = new TemperatureBreachClassifier(new PassiveCooling);
+            return breachClassifier->classifyBreach(temperatureInC);
         }
         if(coolingType == HI_ACTIVE_COOLING){
             breachClassifier = new TemperatureBreachClassifier(new HiActiveCooling);
+            return breachClassifier->classifyBreach(temperatureInC);
         }
         if(coolingType == MED_ACTIVE_COOLING){
             breachClassifier = new TemperatureBreachClassifier(new MedActiveCooling);
+            return breachClassifier->classifyBreach(temperatureInC);
         }
-        return breachClassifier->classifyBreach(temperatureInC);
-
 }
 
 void checkAndAlert(
