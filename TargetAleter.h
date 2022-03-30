@@ -6,9 +6,11 @@
 #define COVERAGE_IN_CPP_SKANDANARAYANA_TARGETALETER_H
 
 #include "BreachTypeAlert.h"
+#include "typewise-alert.h"
+
 class ITargetAlert{
 public:
-    virtual void sendToTarget(BreachType breachType) = 0;
+    virtual AlertStatus sendToTarget(BreachType breachType) = 0;
 };
 
 class TargetAlert{
@@ -26,29 +28,31 @@ public:
 
 class ControllerAlert: public ITargetAlert{
 public:
-    void sendToTarget(BreachType breachType){
+    AlertStatus sendToTarget(BreachType breachType){
         const unsigned short header = 0xfeed;
         std::cout<< header << ", " << breachType << std::endl;
+        return ALERT_NOT_REQUIRED;
     }
 };
 
 class EmailAlert:public ITargetAlert{
 public:
-    void sendToTarget(BreachType breachType){
+    AlertStatus sendToTarget(BreachType breachType){
         std::string recipient = "a.b@c.com";
         BreachAlert *alert;
         if (breachType == TOO_LOW) {
             alert = new BreachAlert(new LowBreachType);
             alert->outputAlert(recipient);
+            return ALERT_REQUIRED;
         }
         if(breachType == TOO_HIGH){
             alert = new BreachAlert(new HighBreachType);
             alert->outputAlert(recipient);
+            return ALERT_REQUIRED;
         }
-        if(breachType == NORMAL){
-            alert = new BreachAlert(new NormalBreachType);
-            alert->outputAlert(recipient);
-        }
+//        alert = new BreachAlert(new NormalBreachType);
+//        alert->outputAlert(recipient);
+        return ALERT_NOT_REQUIRED;
     }
 };
 

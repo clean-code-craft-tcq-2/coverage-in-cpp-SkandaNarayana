@@ -7,7 +7,7 @@
 
 class IBreachType{
 public:
-    virtual void printBreachTypeInfo(std::string recipient) = 0;
+    virtual std::string printBreachTypeInfo(std::string recipient) = 0;
 };
 
 class BreachAlert{
@@ -25,25 +25,28 @@ public:
 
 class LowBreachType : public IBreachType{
 public:
-    void printBreachTypeInfo(std::string recipient){
-        std::cout << "To: "<< recipient <<"\n";
-        std::cout <<"Hi, the temperature is too low\n";
+    std::string printBreachTypeInfo(std::string recipient){
+        std::string emailContent = {"To: " +recipient};
+        emailContent += " Hi, the temperature is too low\n";
+        return emailContent;
     }
 };
 
 class HighBreachType: public IBreachType{
 public:
-    void printBreachTypeInfo(std::string recipient) {
-        std::cout << "To: "<< recipient <<"\n";
-        std::cout <<"Hi, the temperature is too high\n";
+    std::string printBreachTypeInfo(std::string recipient) {
+        std::string emailContent = "To: " + recipient;
+        emailContent += " Hi, the temperature is too high\n";
+        return emailContent;
     }
 };
 
 class NormalBreachType: public IBreachType{
 public:
-    void printBreachTypeInfo(std::string recipient) {
-        std::cout << "To: "<< recipient <<"\n";
-        std::cout <<"Hi, the temperature is normal\n";
+    std::string printBreachTypeInfo(std::string recipient) {
+        std::string emailContent = "To: " + recipient;
+        emailContent += " Hi, the temperature is normal\n";
+        return emailContent;
     }
 };
 #endif //COVERAGE_IN_CPP_SKANDANARAYANA_BREACHTYPEALERT_H

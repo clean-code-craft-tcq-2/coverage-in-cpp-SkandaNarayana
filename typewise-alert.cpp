@@ -2,24 +2,25 @@
 #include "TargetAleter.h"
 #include "TemperatureBreachClassifier.h"
 
-TargetAlert *getAlert(const AlertTarget &alertTarget);
+TargetAlert* getAlert(const AlertTarget &alertTarget);
+
+
+std::map<CoolingType, ITemperatureBreachClassifier*> CoolingTypeMap = {
+        {PASSIVE_COOLING, new PassiveCooling},
+        {HI_ACTIVE_COOLING, new HiActiveCooling},
+        {MED_ACTIVE_COOLING, new MedActiveCooling}
+};
+
+TemperatureBreachClassifier* getClassifiedBreach(std::map<CoolingType, ITemperatureBreachClassifier*> CoolingTypeMap, CoolingType coolingType){
+    return new TemperatureBreachClassifier(CoolingTypeMap[coolingType]);
+}
+
 
 BreachType classifyTemperatureBreach(
     CoolingType coolingType, double temperatureInC) {
-        BreachType breachType;
         TemperatureBreachClassifier *breachClassifier;
-        if(coolingType == PASSIVE_COOLING){
-            breachClassifier = new TemperatureBreachClassifier(new PassiveCooling);
-            return breachClassifier->classifyBreach(temperatureInC);
-        }
-        if(coolingType == HI_ACTIVE_COOLING){
-            breachClassifier = new TemperatureBreachClassifier(new HiActiveCooling);
-            return breachClassifier->classifyBreach(temperatureInC);
-        }
-        if(coolingType == MED_ACTIVE_COOLING){
-            breachClassifier = new TemperatureBreachClassifier(new MedActiveCooling);
-            return breachClassifier->classifyBreach(temperatureInC);
-        }
+        breachClassifier = getClassifiedBreach(CoolingTypeMap, coolingType);
+        return breachClassifier->classifyBreach(temperatureInC);
 }
 
 void checkAndAlert(
@@ -29,12 +30,12 @@ void checkAndAlert(
     batteryChar.coolingType, temperatureInC
   );
 
-    TargetAlert *targetAlert = getAlert(alertTarget);
+    TargetAlert* targetAlert = getAlert(alertTarget);
 
     targetAlert->alertTheTarget(breachType);
 }
 
-TargetAlert *getAlert(const AlertTarget &alertTarget) {
+TargetAlert* getAlert(const AlertTarget &alertTarget) {
     TargetAlert *targetAlert;
     if(alertTarget == TO_CONTROLLER){
         targetAlert = new TargetAlert(new ControllerAlert);

@@ -64,3 +64,43 @@ TEST_CASE(" the type of breach"){
     TemperatureBreachClassifier *breachClassifier = new TemperatureBreachClassifier(new PassiveCooling);
     REQUIRE(breachClassifier->classifyBreach(54) == TOO_HIGH );
 }
+
+//TEST_CASE(" get the email alert"){
+//    TargetAlert* targetAlert = new TargetAlert(new EmailAlert);
+//    REQUIRE(getAlert(TO_EMAIL));
+//}
+//
+//TEST_CASE(" get the controller alert"){
+//    TargetAlert* targetAlert = new TargetAlert(new EmailAlert);
+//    REQUIRE(getAlert(TO_EMAIL));
+//}
+
+TEST_CASE(" the content of email when temp is too low"){
+    LowBreachType lowBreach;
+    REQUIRE(lowBreach.printBreachTypeInfo("admin") == "To: admin Hi, the temperature is too low\n");
+}
+
+TEST_CASE(" the content of email when temp is too high"){
+    HighBreachType highBreach;
+    REQUIRE(highBreach.printBreachTypeInfo("admin") == "To: admin Hi, the temperature is too high\n");
+}
+
+TEST_CASE("alert required to email when temperature is low"){
+    EmailAlert emailAlert;
+    REQUIRE(emailAlert.sendToTarget(TOO_LOW) == ALERT_REQUIRED);
+}
+
+TEST_CASE("alert required to email when temperature is high"){
+    EmailAlert emailAlert;
+    REQUIRE(emailAlert.sendToTarget(TOO_HIGH) == ALERT_REQUIRED);
+}
+
+TEST_CASE("alert not required to email when temperature is normal"){
+    EmailAlert emailAlert;
+    REQUIRE(emailAlert.sendToTarget(NORMAL) == ALERT_NOT_REQUIRED);
+}
+
+TEST_CASE("alert not required to message sent to controller"){
+    ControllerAlert controllerAlert;
+    REQUIRE(controllerAlert.sendToTarget(NORMAL) == ALERT_NOT_REQUIRED);
+}
