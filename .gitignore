@@ -4,3 +4,6 @@ testchecker
 *.gcov
 *.info
 *.html
+cmake-build-debug/
+CMakeLists.txt
+.idea/

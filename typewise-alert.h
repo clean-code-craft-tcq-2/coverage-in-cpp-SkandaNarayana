@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <iostream>
+#include <map>
 
 typedef enum {
   PASSIVE_COOLING,
@@ -12,7 +15,6 @@ typedef enum {
   TOO_HIGH
 } BreachType;
 
-BreachType inferBreach(double value, double lowerLimit, double upperLimit);
 BreachType classifyTemperatureBreach(CoolingType coolingType, double temperatureInC);
 
 typedef enum {
@@ -20,13 +22,20 @@ typedef enum {
   TO_EMAIL
 } AlertTarget;
 
+typedef enum {
+    ALERT_REQUIRED,
+    ALERT_NOT_REQUIRED
+} AlertNecessity;
+
+typedef enum {
+    ALERT_SENT,
+    ALERT_NOT_SENT
+} AlertStatus;
+
 typedef struct {
   CoolingType coolingType;
   char brand[48];
 } BatteryCharacter;
 
-void checkAndAlert(
+AlertStatus checkAndAlert(
   AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC);
-
-void sendToController(BreachType breachType);
-void sendToEmail(BreachType breachType);
