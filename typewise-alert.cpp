@@ -23,7 +23,7 @@ BreachType classifyTemperatureBreach(
         return breachClassifier->classifyBreach(temperatureInC);
 }
 
-void checkAndAlert(
+AlertStatus checkAndAlert(
     AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC) {
 
   BreachType breachType = classifyTemperatureBreach(
@@ -32,7 +32,8 @@ void checkAndAlert(
 
     TargetAlert* targetAlert = getAlert(alertTarget);
 
-    targetAlert->alertTheTarget(breachType);
+    return targetAlert->alertTheTarget(breachType);
+
 }
 
 TargetAlert* getAlert(const AlertTarget &alertTarget) {

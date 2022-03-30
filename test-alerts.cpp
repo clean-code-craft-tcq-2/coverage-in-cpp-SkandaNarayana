@@ -104,3 +104,21 @@ TEST_CASE("alert not required to message sent to controller"){
     ControllerAlert controllerAlert;
     REQUIRE(controllerAlert.sendToTarget(NORMAL) == ALERT_NOT_REQUIRED);
 }
+
+TEST_CASE("valid output from checkAndAlert"){
+    BatteryCharacter batteryChar;
+    batteryChar.coolingType = PASSIVE_COOLING;
+    REQUIRE(checkAndAlert(TO_CONTROLLER, batteryChar, 45) == ALERT_NOT_SENT);
+}
+
+TEST_CASE("test output for checkAndAlert PASSIVE_COOLING to controller"){
+    BatteryCharacter batteryChar;
+    batteryChar.coolingType = PASSIVE_COOLING;
+    REQUIRE(checkAndAlert(TO_CONTROLLER, batteryChar, 45) == ALERT_NOT_SENT);
+}
+
+TEST_CASE("test output for checkAndAlert PASSIVE_COOLING to email"){
+    BatteryCharacter batteryChar;
+    batteryChar.coolingType = PASSIVE_COOLING;
+    REQUIRE(checkAndAlert(TO_EMAIL, batteryChar, 45) == ALERT_SENT);
+}

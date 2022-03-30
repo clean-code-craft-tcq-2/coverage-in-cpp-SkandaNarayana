@@ -25,6 +25,11 @@ typedef enum {
 typedef enum {
     ALERT_REQUIRED,
     ALERT_NOT_REQUIRED
+} AlertNecessity;
+
+typedef enum {
+    ALERT_SENT,
+    ALERT_NOT_SENT
 } AlertStatus;
 
 typedef struct {
@@ -32,5 +37,5 @@ typedef struct {
   char brand[48];
 } BatteryCharacter;
 
-void checkAndAlert(
+AlertStatus checkAndAlert(
   AlertTarget alertTarget, BatteryCharacter batteryChar, double temperatureInC);

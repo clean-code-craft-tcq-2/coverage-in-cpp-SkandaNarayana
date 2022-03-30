@@ -10,7 +10,7 @@
 
 class ITargetAlert{
 public:
-    virtual AlertStatus sendToTarget(BreachType breachType) = 0;
+    virtual AlertNecessity sendToTarget(BreachType breachType) = 0;
 };
 
 class TargetAlert{
@@ -21,14 +21,16 @@ public:
         delete targetAlert;
     }
 
-    void alertTheTarget(BreachType breachType){
-        targetAlert->sendToTarget(breachType);
+    AlertStatus alertTheTarget(BreachType breachType){
+        if (targetAlert->sendToTarget(breachType) == ALERT_NOT_REQUIRED)
+            return ALERT_NOT_SENT;
+        return ALERT_SENT;
     }
 };
 
 class ControllerAlert: public ITargetAlert{
 public:
-    AlertStatus sendToTarget(BreachType breachType){
+    AlertNecessity sendToTarget(BreachType breachType){
         const unsigned short header = 0xfeed;
         std::cout<< header << ", " << breachType << std::endl;
         return ALERT_NOT_REQUIRED;
@@ -37,7 +39,7 @@ public:
 
 class EmailAlert:public ITargetAlert{
 public:
-    AlertStatus sendToTarget(BreachType breachType){
+    AlertNecessity sendToTarget(BreachType breachType){
         std::string recipient = "a.b@c.com";
         BreachAlert *alert;
         if (breachType == TOO_LOW) {
